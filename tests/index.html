@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <!--
+    Copyright Facebook Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  <head>
+    <title>Mu Tests</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <style type="text/css">body { margin: 0; }</style>
+    <link type="text/css" rel="stylesheet" href="http://static.daaku.org/qunit/qunit/qunit.css">
+  </head>
+  <body>
+    <h1 id="qunit-header">
+      <input style="float: right; margin: 0.2em 0.5em;"
+             type="button"
+             onclick="window.open('/jscoverage.html')"
+             value="JSCoverage">
+      Mu
+    </h1>
+
+    <h2 id="qunit-banner"></h2>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="main"></div>
+
+    <button id="action"></button>
+
+    <!-- qunit -->
+    <script src="http://static.daaku.org/qunit/qunit/qunit.js"></script>
+
+    <!-- include everything -->
+    <script src="../src/core/prelude.js"></script>
+    <script src="../src/core/content.js"></script>
+    <script src="../src/core/frames.js"></script>
+    <script src="../src/core/qs.js"></script>
+    <script src="../src/core/flash.js"></script>
+    <script src="../src/core/xd.js"></script>
+
+    <!-- Tests Expect This -->
+    <script>
+      var action = document.getElementById('action');
+    </script>
+
+    <div id="fb-root"></div>
+
+    <!-- Tests -->
+    <script src="js/prelude.js"></script>
+    <script src="js/qs.js"></script>
+    <script src="js/xd.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/flash.js"></script>
+    <script src="js/frames.js"></script>
+  </body>
+</html>

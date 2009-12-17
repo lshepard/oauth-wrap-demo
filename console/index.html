@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <!--
+    Copyright Facebook Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <meta name="keywords"
+          content="javascript, facebook, connect, library, share, publish, stream, api, json, fql">
+    <meta name="description"
+          content="JavaScript library to use Facebook Connect on your site.">
+    <title>OAuth WRAP Demo - Console</title>
+    <link type="text/css" rel="stylesheet" href="console.css">
+    <link type="text/css" rel="stylesheet" href="wrap.css">
+  </head>
+  <body>
+    <div id="sidebar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li>
+          Demo of OAuth Wrap Javascript profile.
+        </li>
+        <li>
+          The source code is hosted on
+          <a href="http://github.com/lshepard/connect-js">GitHub</a>.
+        </li>
+      </ul>
+    </div>
+
+    <h1>OAuth Wrap &mdash; Console</h1>
+
+    <div id="controls">
+      <div id="connect">
+        <h2>Get Feed</h2>
+
+	Send a request to authorize your Friendfeed stream.
+
+        <input type="button"
+               value="Authorize"
+               onclick="WRAP.authorize(fetchFriendFeed)">
+      </div>
+
+    <div>
+      <div id="feed"></div>
+    </div>
+    <div id="info"></div>
+
+    <script src="console.js"></script>
+
+    <div id="fb-root"></div>
+    <script src="../src/core/prelude.js"></script>
+    <script src="../src/core/content.js"></script>
+    <script src="../src/core/frames.js"></script>
+    <script src="../src/core/qs.js"></script>
+    <script src="../src/core/xd.js"></script>
+    <script src="../src/wrap.js"></script>
+    <script>
+      WRAP.init({
+        client_id        : 'f9c01d436f04484ea6de2337ee82636a',
+        authorize_url    : 'https://friendfeed.com/account/wrap/authorize?',
+        access_token_url : 'https://friendfeed.com/account/wrap/access_token?'
+      });
+
+      /**
+       * Fetch a stream with the OAuth WRAP access token via a JSONP call.
+       */
+      function fetchFriendFeed(response) {
+        if (!response.wrap_access_token) {
+	  return;
+	}
+
+	var url = 'https://friendfeed-api.com/v2/feed/home?' +
+	  FB.QS.encode({wrap_access_token : response.wrap_access_token,
+			callback : 'displayFriendFeed'});
+
+	document.getElementById('feed').innerHTML =
+	  '<img src="http://facebook.com/images/loaders/indicator_blue_large.gif" />';
+	
+	// jsonp call
+	var script = document.createElement('script');
+	script.src = url;
+	document.getElementsByTagName('head')[0].appendChild(script);
+      };
+
+      /**
+       * Display a friendfeed stream in HTML template.
+       *
+       * Template stolen from 
+       *  http://github.com/finiteloop/friendfeed-wrap-example/blob/master/feed.html
+       */
+      function displayFriendFeed(feed) {
+	document.getElementById('feed').innerHTML = 
+	  '<h3>' + feed.name + '</h3>';
+
+	for (var i = 0; i < feed.entries.length; ++i) {
+	  var entry = feed.entries[i];
+	  var html =
+	    '<div class="entry">'
+	    +'<div class="picture">'
+	    +' <a href="http://friendfeed.com/"' + entry.from.id + '>'
+	    +' <img src="http://friendfeed-api.com/v2/picture/' + entry.from.id + '?size=medium"/>'
+	    +' </a>'
+	    +'</div>'
+	    +'<div class="body">'
+	    +' <div class="author">'
+	    +'  <span class="from">'
+	    +'    <a href="http://friendfeed.com/' + entry.from.id + '">'
+	    +       entry.from.name
+	    +'    </a>'
+	    +'  </span>';
+	    
+	  if (entry.to) {
+	    var recipients = [];
+	    for (var j = 0; j < entry.to.length; ++j) {
+	      var recipient = entry.to[j];
+	      recipients.push(
+	      '<a href="http://friendfeed.com/' + recipient.id + '">'
+	      +  recipient.name
+	      +'</a>');
+	    }
+	    html = html +
+	      '<span class="to">to '
+	      + recipients.join(", ")
+	      +'</span>';
+	  }
+
+	  html = html + '</div>'; // author
+	  html = html + '<div class="title">' + entry.body + '</div>';
+	  
+	  if (entry.thumbnails) {
+	    var thumbnails = [];
+	    for (var k = 0; k < entry.thumbnails.length; ++k) {
+	      var thumbnail = entry.thumbnails[k];
+	      thumbnails.push(
+		'<a href="' + thumbnail.link + '">'
+		+'<img src="' + thumbnail.url + '">'
+		+'</a>');
+	    }
+	    html = html +
+	      '<div class="media">'
+	      + thumbnails.join('')
+	      +'</div>';
+	  }
+	    
+	  html = html +
+	    '<div class="info">'
+	    +'<a href="http://friendfeed.com/' + entry.id + '" class="permalink">'
+	    +  entry.date
+	    +'</a>';
+	    
+	  // todo: via 
+	  html = html +
+	    '</div></div><div class="clear"></div></div>';
+
+	  // insert into the doc
+	  var el = document.createElement('div');
+	  el.innerHTML = html;
+	  document.getElementById('feed').appendChild(el);
+	}
+      };
+    </script>
+  </body>
+</html>
