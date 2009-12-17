@@ -1,10 +1,10 @@
 OAuth WRAP JavaScript demo
 ===============================
 
-[oauthwrap][OAuth WRAP] is a simpler, revised version of the [oauth][OAuth] protocol.
+OAuth [WRAP][WRAP] is a simpler, revised version of the [oauth][OAuth] protocol.
 This project demonstrates how to use the protocol in a Javascript context.
 
-[oauthwrap]: http://wiki.oauth.net/OAuth-WRAP
+[WRAP]: http://wiki.oauth.net/OAuth-WRAP
 [oauth]: http://oauth.net/
 
 How it works
