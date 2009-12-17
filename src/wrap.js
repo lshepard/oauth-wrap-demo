@@ -55,5 +55,4 @@ WRAP = {
   _client_id         : null,
   _client_secret     : null,
   _authorize_url     : null,
-  _access_token_url  : null
 };
