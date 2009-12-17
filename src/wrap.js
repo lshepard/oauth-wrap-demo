@@ -46,13 +46,17 @@ WRAP = {
     FB.Frames.popup(url, 450, 415, g);
   },
 
+  /**
+   * Initialize the WRAP config.
+   *
+   * @param {Object} params  dictionary of client_id and authorize_url for
+   *                         the desired endpoint
+   */
   init: function(params) {
     this._client_id         = params.client_id;
-    this._client_secret     = params.client_secret;
     this._authorize_url     = params.authorize_url;
   },
   
   _client_id         : null,
-  _client_secret     : null,
   _authorize_url     : null,
 };
